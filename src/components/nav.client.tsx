@@ -230,12 +230,17 @@ export function Drawer({
 }) {
   return (
     <Sheet>
-      <SheetTrigger asChild className="md:hidden">
-        <Button variant="ghost" size="icon">
-          <Menu />
+      <SheetTrigger asChild>
+        <Button
+          variant="secondary"
+          size="icon"
+          className="md:hidden fixed bottom-20 right-4 h-14 w-14 rounded-full shadow-lg z-40"
+        >
+          <Menu className="h-6 w-6" />
+          <span className="sr-only">Open navigation</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="p-0 rounded-r-2xl">
+      <SheetContent side="left" className="p-0 w-full sm:max-w-full rounded-none">
         <div className="overflow-y-auto h-full p-6">
           <Sidebar
             userId={userId}

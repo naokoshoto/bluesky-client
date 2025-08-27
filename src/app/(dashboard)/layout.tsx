@@ -68,12 +68,6 @@ export default async function Layout({
     <>
       <div className="flex flex-col min-h-screen">
         <div className="h-14 border-b flex flex-row items-center justify-between px-4 fixed top-0 inset-x-0 bg-background/70 z-20 backdrop-blur">
-          <Drawer
-            pinnedFeedGenerators={pinnedFeeds?.feeds}
-            feedGenerators={feedGenerators}
-            userId={user?.data?.handle}
-          />
-
           <Link
             href={routes.home}
             className="md:flex-1 flex flex-row items-center space-x-0.5 mr-3"
@@ -115,6 +109,11 @@ export default async function Layout({
         <main className="w-full mx-auto md:pl-60">{children}</main>
 
         <BottomTabNavigator />
+        <Drawer
+          pinnedFeedGenerators={pinnedFeeds?.feeds}
+          feedGenerators={feedGenerators}
+          userId={user?.data?.handle}
+        />
       </div>
       {(session?.handle === env.ADMIN_HANDLE ||
         env.NODE_ENV === "development") && <VercelToolbar />}
