@@ -123,12 +123,24 @@ export const getMyLikedPosts = async (params: {
 };
 
 export const searchPosts = async (params: { query: string; limit: number }) => {
+  const queryParams = new URLSearchParams();
+  queryParams.append("q", params.query);
+  queryParams.append("limit", String(params.limit));
+
   const res = await fetch(
-    `https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=${params.query}`,
+    `https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?${queryParams.toString()}`,
     {
       cache: "no-store",
     },
   );
+
+  if (
+    !res.ok ||
+    !res.headers.get("content-type")?.includes("application/json")
+  ) {
+    throw new Error("Failed to search posts");
+  }
+
   const data = await res.json();
   return data as { posts: PostView[]; cursor: string };
 };
@@ -137,12 +149,25 @@ export const searchHashtags = async (params: {
   query: string;
   limit: number;
 }) => {
+  const queryParams = new URLSearchParams();
+  queryParams.append("tag", params.query);
+  queryParams.append("q", params.query);
+  queryParams.append("limit", String(params.limit));
+
   const res = await fetch(
-    `https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?tag=${params.query}&q=${params.query}`,
+    `https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?${queryParams.toString()}`,
     {
       cache: "no-store",
     },
   );
+
+  if (
+    !res.ok ||
+    !res.headers.get("content-type")?.includes("application/json")
+  ) {
+    throw new Error("Failed to search hashtags");
+  }
+
   const data = await res.json();
   return data as { posts: PostView[]; cursor: string };
 };
