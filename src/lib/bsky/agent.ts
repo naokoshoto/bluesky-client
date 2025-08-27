@@ -156,7 +156,6 @@ export const searchHashtags = async (params: {
   limit?: number;
 }) => {
   const queryParams = new URLSearchParams();
-  queryParams.set("tag", params.query);
   queryParams.set("q", params.query);
   if (params.limit !== undefined) {
     queryParams.set("limit", String(params.limit));
@@ -175,13 +174,31 @@ export const searchHashtags = async (params: {
       res.headers.get("content-type")?.includes("application/json")
     ) {
       const data = await res.json();
-      return data as { posts: PostView[]; cursor: string };
+      const posts = (data.posts ?? []) as PostView[];
+
+      const regex = /(^|\s)#([\p{L}0-9_]+)/gu;
+      const found = new Set<string>();
+
+      for (const post of posts) {
+        const text: string = (post as any)?.record?.text ?? "";
+        let match: RegExpExecArray | null;
+        while ((match = regex.exec(text)) !== null) {
+          found.add(match[2]);
+        }
+      }
+
+      const queryLower = params.query.toLowerCase();
+      const hashtags = Array.from(found)
+        .filter((tag) => tag.toLowerCase().startsWith(queryLower))
+        .slice(0, params.limit);
+
+      return { hashtags };
     }
   } catch (e) {
     // ignore
   }
 
-  return { posts: [], cursor: "" };
+  return { hashtags: [] };
 };
 
 export const getSavedFeeds = async () => {
