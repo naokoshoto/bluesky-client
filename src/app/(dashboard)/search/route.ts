@@ -12,7 +12,9 @@ export function GET(request: NextRequest) {
   const referrer = request.headers.get("referer");
   const referrerIsSearchPage = referrer?.match(matchSearchUrl);
 
-  if (referrerIsSearchPage && referrerIsSearchPage[2]) {
+  if (query.startsWith("#")) {
+    redirect += "/hashtags";
+  } else if (referrerIsSearchPage && referrerIsSearchPage[2]) {
     redirect += `/${referrerIsSearchPage[2]}`;
   }
 
