@@ -122,54 +122,66 @@ export const getMyLikedPosts = async (params: {
   };
 };
 
-export const searchPosts = async (params: { query: string; limit: number }) => {
+export const searchPosts = async (params: { query: string; limit?: number }) => {
   const queryParams = new URLSearchParams();
-  queryParams.append("q", params.query);
-  queryParams.append("limit", String(params.limit));
-
-  const res = await fetch(
-    `https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?${queryParams.toString()}`,
-    {
-      cache: "no-store",
-    },
-  );
-
-  if (
-    !res.ok ||
-    !res.headers.get("content-type")?.includes("application/json")
-  ) {
-    throw new Error("Failed to search posts");
+  queryParams.set("q", params.query);
+  if (params.limit !== undefined) {
+    queryParams.set("limit", String(params.limit));
   }
 
-  const data = await res.json();
-  return data as { posts: PostView[]; cursor: string };
+  try {
+    const res = await fetch(
+      `https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?${queryParams.toString()}`,
+      {
+        cache: "no-store",
+      },
+    );
+
+    if (
+      res.ok &&
+      res.headers.get("content-type")?.includes("application/json")
+    ) {
+      const data = await res.json();
+      return data as { posts: PostView[]; cursor: string };
+    }
+  } catch (e) {
+    // ignore
+  }
+
+  return { posts: [], cursor: "" };
 };
 
 export const searchHashtags = async (params: {
   query: string;
-  limit: number;
+  limit?: number;
 }) => {
   const queryParams = new URLSearchParams();
-  queryParams.append("tag", params.query);
-  queryParams.append("q", params.query);
-  queryParams.append("limit", String(params.limit));
-
-  const res = await fetch(
-    `https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?${queryParams.toString()}`,
-    {
-      cache: "no-store",
-    },
-  );
-
-  if (
-    !res.ok ||
-    !res.headers.get("content-type")?.includes("application/json")
-  ) {
-    throw new Error("Failed to search hashtags");
+  queryParams.set("tag", params.query);
+  queryParams.set("q", params.query);
+  if (params.limit !== undefined) {
+    queryParams.set("limit", String(params.limit));
   }
 
-  const data = await res.json();
-  return data as { posts: PostView[]; cursor: string };
+  try {
+    const res = await fetch(
+      `https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?${queryParams.toString()}`,
+      {
+        cache: "no-store",
+      },
+    );
+
+    if (
+      res.ok &&
+      res.headers.get("content-type")?.includes("application/json")
+    ) {
+      const data = await res.json();
+      return data as { posts: PostView[]; cursor: string };
+    }
+  } catch (e) {
+    // ignore
+  }
+
+  return { posts: [], cursor: "" };
 };
 
 export const getSavedFeeds = async () => {
