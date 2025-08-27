@@ -10,6 +10,7 @@ import z from "zod";
 import Image from "next/image";
 import { ModeToggle } from "@/components/theme-mode-toggle";
 import { Menu } from "@/components/icons";
+import { useState, type ReactNode } from "react";
 
 import {
   HomeOutline,
@@ -52,16 +53,18 @@ const matchPaths = (target: string, current: string) => {
   return current.indexOf(target) === 0;
 };
 
-export function Sidebar({
+function Sidebar({
   userId,
   feedGenerators,
   pinnedFeedGenerators,
   collapsed = false,
+  onToggleCollapsed,
 }: {
   userId?: string;
   feedGenerators: z.infer<typeof feedGeneratorSchema>[];
   pinnedFeedGenerators?: z.infer<typeof feedGeneratorSchema>[];
   collapsed?: boolean;
+  onToggleCollapsed?: () => void;
 }) {
   const pathname = usePathname();
 
@@ -69,11 +72,18 @@ export function Sidebar({
 
   return (
     <div className="flex flex-col justify-between min-h-full divide-y">
-      <div
-        className={`flex flex-col space-y-1 pb-4 ${
-          collapsed ? "items-center group-hover/nav:items-stretch" : ""
-        }`}
-      >
+      <div className={`flex flex-col space-y-1 pb-4 ${collapsed ? "items-center" : ""}`}>
+        {onToggleCollapsed && (
+          <Button
+            onClick={onToggleCollapsed}
+            variant="ghost"
+            size={collapsed ? "icon" : "sm"}
+            className={collapsed ? "h-12 w-12" : "justify-start px-2.5 -mx-2.5"}
+          >
+            <Menu className={collapsed ? "h-6 w-6" : "mr-1.5 text-lg"} />
+            {collapsed ? null : "Menu"}
+          </Button>
+        )}
         {SIDEBAR_LINKS_SECTION_1.map(
           ({ href, text, icon: Icon, iconActive: IconActive }) => {
             const active = matchPaths(href, pathname);
@@ -84,19 +94,11 @@ export function Sidebar({
                 asChild
                 variant={active ? "secondary" : "ghost"}
                 size={collapsed ? "icon" : "sm"}
-                className={
-                  collapsed
-                    ? "h-12 w-12 group-hover/nav:w-full group-hover/nav:justify-start group-hover/nav:px-2.5"
-                    : "justify-start px-2.5 -mx-2.5"
-                }
+                className={collapsed ? "h-12 w-12" : "justify-start px-2.5 -mx-2.5"}
               >
                 <Link href={href} className="flex items-center">
                   <IconComp className={collapsed ? "h-6 w-6" : "mr-1.5 text-lg"} />
-                  {collapsed ? (
-                    <span className="hidden ml-2 group-hover/nav:inline">{text}</span>
-                  ) : (
-                    text
-                  )}
+                  {collapsed ? null : text}
                 </Link>
               </Button>
             );
@@ -105,9 +107,7 @@ export function Sidebar({
       </div>
 
       {pinnedFeedGenerators && (
-        <div
-          className={`${collapsed ? "hidden group-hover/nav:flex" : "flex"} flex-col space-y-1 py-4`}
-        >
+        <div className={`${collapsed ? "hidden" : "flex"} flex-col space-y-1 py-4`}>
           <div className="uppercase text-muted-foreground text-sm">
             Pinned Feeds
           </div>
@@ -141,9 +141,7 @@ export function Sidebar({
         </div>
       )}
 
-      <div
-        className={`${collapsed ? "hidden group-hover/nav:flex" : "flex"} flex-col space-y-1 py-4`}
-      >
+      <div className={`${collapsed ? "hidden" : "flex"} flex-col space-y-1 py-4`}>
         <div className="uppercase text-muted-foreground text-sm">
           Popular Feeds
         </div>
@@ -176,9 +174,7 @@ export function Sidebar({
         ))}
       </div>
 
-      <div
-        className={`${collapsed ? "hidden group-hover/nav:flex" : "flex"} flex-col space-y-1 py-4`}
-      >
+      <div className={`${collapsed ? "hidden" : "flex"} flex-col space-y-1 py-4`}>
         <div className="uppercase text-muted-foreground text-sm">Settings</div>
         <ModeToggle />
         {userId && (
@@ -195,9 +191,7 @@ export function Sidebar({
         )}
       </div>
 
-      <div
-        className={`${collapsed ? "hidden group-hover/nav:flex" : "flex"} pt-4 flex-col`}
-      >
+      <div className={`${collapsed ? "hidden" : "flex"} pt-4 flex-col`}>
         <Button
           asChild
           variant="ghost"
@@ -272,5 +266,44 @@ export function Drawer({
         </div>
       </SheetContent>
     </Sheet>
+  );
+}
+
+export function DesktopNav({
+  userId,
+  feedGenerators,
+  pinnedFeedGenerators,
+  children,
+}: {
+  userId?: string;
+  feedGenerators: z.infer<typeof feedGeneratorSchema>[];
+  pinnedFeedGenerators?: z.infer<typeof feedGeneratorSchema>[];
+  children: ReactNode;
+}) {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <>
+      <aside
+        className={`fixed left-0 bottom-0 top-14 border-r overflow-y-auto transition-all max-md:hidden ${
+          expanded ? "w-64 p-6" : "w-20 p-2"
+        }`}
+      >
+        <Sidebar
+          userId={userId}
+          feedGenerators={feedGenerators}
+          pinnedFeedGenerators={pinnedFeedGenerators}
+          collapsed={!expanded}
+          onToggleCollapsed={() => setExpanded((prev) => !prev)}
+        />
+      </aside>
+      <main
+        className={`w-full mx-auto transition-all ${
+          expanded ? "md:pl-64" : "md:pl-20"
+        }`}
+      >
+        {children}
+      </main>
+    </>
   );
 }
