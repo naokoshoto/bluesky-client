@@ -155,8 +155,10 @@ export const searchHashtags = async (params: {
   query: string;
   limit?: number;
 }) => {
+  const query = params.query.replace(/^#/, "");
+
   const queryParams = new URLSearchParams();
-  queryParams.set("q", params.query);
+  queryParams.set("q", query);
   if (params.limit !== undefined) {
     queryParams.set("limit", String(params.limit));
   }
@@ -187,7 +189,7 @@ export const searchHashtags = async (params: {
         }
       }
 
-      const queryLower = params.query.toLowerCase();
+      const queryLower = query.toLowerCase();
       const hashtags = Array.from(found)
         .filter((tag) => tag.toLowerCase().startsWith(queryLower))
         .slice(0, params.limit);

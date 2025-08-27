@@ -10,7 +10,10 @@ export default async function Page({ params }: { params: { query: string } }) {
     <ul className="flex flex-col">
       {hashtags.map((tag) => (
         <li key={tag}>
-          <Link href={routes.searchPosts(tag)} className="text-highlight">
+          <Link
+            href={routes.searchPosts(`#${tag}`)}
+            className="text-highlight"
+          >
             #{tag}
           </Link>
         </li>
