@@ -9,17 +9,18 @@ export default function Layout({
   children: React.ReactNode;
   params: { query: string };
 }) {
+  const query = decodeURIComponent(params.query);
   const links = [
     {
-      href: routes.searchPosts(params.query),
+      href: routes.searchPosts(query),
       label: "Posts",
     },
     {
-      href: routes.searchUsers(params.query),
+      href: routes.searchUsers(query),
       label: "Users",
     },
     {
-      href: routes.searchHashtags(params.query),
+      href: routes.searchHashtags(query),
       label: "Hashtags",
     },
   ];

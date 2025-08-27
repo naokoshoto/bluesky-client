@@ -29,7 +29,7 @@ export const agent = new AtpAgent({
 });
 
 export const publicAgent = new AtpAgent({
-  service: "https://public.api.bsky.app",
+  service: "https://api.bsky.app",
   fetch: (input, init) => {
     return fetch(input, {
       ...init,
@@ -122,29 +122,92 @@ export const getMyLikedPosts = async (params: {
   };
 };
 
-export const searchPosts = async (params: { query: string; limit: number }) => {
-  const res = await fetch(
-    `https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?q=${params.query}`,
-    {
-      cache: "no-store",
-    },
-  );
-  const data = await res.json();
-  return data as { posts: PostView[]; cursor: string };
+export const searchPosts = async (params: { query: string; limit?: number }) => {
+  const queryParams = new URLSearchParams();
+  queryParams.set("q", params.query);
+  if (params.limit !== undefined) {
+    queryParams.set("limit", String(params.limit));
+  }
+
+  try {
+    const res = await fetch(
+      `https://api.bsky.app/xrpc/app.bsky.feed.searchPosts?${queryParams.toString()}`,
+      {
+        cache: "no-store",
+      },
+    );
+
+    if (
+      res.ok &&
+      res.headers.get("content-type")?.includes("application/json")
+    ) {
+      const data = await res.json();
+      return data as { posts: PostView[]; cursor: string };
+    }
+  } catch (e) {
+    // ignore
+  }
+
+  return { posts: [], cursor: "" };
 };
 
-export const searchHashtags = async (params: {
-  query: string;
-  limit: number;
-}) => {
-  const res = await fetch(
-    `https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?tag=${params.query}&q=${params.query}`,
-    {
-      cache: "no-store",
-    },
-  );
-  const data = await res.json();
-  return data as { posts: PostView[]; cursor: string };
+export const searchHashtags = async (params: { query: string; limit?: number }) => {
+  const query = params.query.replace(/^#/, "");
+  const desired = params.limit ?? 20;
+
+  const queryLower = query.toLowerCase();
+  const regex = /(^|\s)#([\p{L}0-9_]+)/gu;
+  const found = new Set<string>();
+
+  let cursor: string | undefined;
+
+  try {
+    while (found.size < desired) {
+      const queryParams = new URLSearchParams();
+      queryParams.set("q", query);
+      queryParams.set("limit", "100");
+      if (cursor) {
+        queryParams.set("cursor", cursor);
+      }
+
+      const res = await fetch(
+        `https://api.bsky.app/xrpc/app.bsky.feed.searchPosts?${queryParams.toString()}`,
+        {
+          cache: "no-store",
+        },
+      );
+
+      if (
+        res.ok &&
+        res.headers.get("content-type")?.includes("application/json")
+      ) {
+        const data = await res.json();
+        const posts = (data.posts ?? []) as PostView[];
+
+        for (const post of posts) {
+          const text: string = (post as any)?.record?.text ?? "";
+          let match: RegExpExecArray | null;
+          while ((match = regex.exec(text)) !== null) {
+            const tag = match[2];
+            if (tag.toLowerCase().startsWith(queryLower)) {
+              found.add(tag);
+            }
+          }
+        }
+
+        cursor = data.cursor;
+        if (!cursor || posts.length === 0) {
+          break;
+        }
+      } else {
+        break;
+      }
+    }
+  } catch (e) {
+    // ignore
+  }
+
+  return { hashtags: Array.from(found) };
 };
 
 export const getSavedFeeds = async () => {
@@ -168,7 +231,7 @@ export const getPopularFeedGenerators = async (params: {
     queryParams.append("cursor", params.cursor);
   }
   const res = await fetch(
-    `https://public.api.bsky.app/xrpc/app.bsky.unspecced.getPopularFeedGenerators?${queryParams.toString()}`,
+    `https://api.bsky.app/xrpc/app.bsky.unspecced.getPopularFeedGenerators?${queryParams.toString()}`,
     {
       // next: {
       //   revalidate: 60 * 60, // 1 hour
@@ -221,7 +284,7 @@ export const getActorFeeds = async (params: {
     queryParams.append("cursor", params.cursor);
   }
   const res = await fetch(
-    `https://public.api.bsky.app/xrpc/app.bsky.feed.getActorFeeds?${queryParams.toString()}&rkey=likeCount`,
+    `https://api.bsky.app/xrpc/app.bsky.feed.getActorFeeds?${queryParams.toString()}&rkey=likeCount`,
     {
       cache: "no-store",
     },

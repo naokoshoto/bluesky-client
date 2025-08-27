@@ -9,7 +9,8 @@ import { postsSchema } from "@/lib/schemas";
 const SPLIT = 10;
 
 export default async function Page({ params }: { params: { query: string } }) {
-  const data = await searchPosts({ query: params.query, limit: 20 });
+  const query = decodeURIComponent(params.query);
+  const data = await searchPosts({ query, limit: 20 });
 
   const posts = postsSchema.parse(data.posts);
 

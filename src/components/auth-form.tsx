@@ -17,24 +17,31 @@ async function login(formData: FormData) {
 
   const { username, password } = loginSchema.parse(formData);
 
-  const { data } = await agent.login({
-    identifier: username,
-    password: password,
-  });
+  try {
+    const { data } = await agent.login({
+      identifier: username,
+      password: password,
+    });
 
-  const { accessJwt, refreshJwt, did, handle } = data;
+    const { accessJwt, refreshJwt, did, handle } = data;
 
-  cookies().set("accessJwt", accessJwt);
-  cookies().set("refreshJwt", refreshJwt);
-  cookies().set("did", did);
-  cookies().set("handle", handle);
+    cookies().set("accessJwt", accessJwt);
+    cookies().set("refreshJwt", refreshJwt);
+    cookies().set("did", did);
+    cookies().set("handle", handle);
 
-  redirect("/");
+    redirect("/");
+  } catch {
+    redirect(
+      `/auth?error=${encodeURIComponent("Invalid username or password")}`,
+    );
+  }
 }
-
-export function AuthForm() {
+export function AuthForm({ error }: { error?: string }) {
   return (
     <form action={login} className="space-y-2 w-full max-w-md">
+      {error && <p className="text-red-500 text-sm">{error}</p>}
+
       <FormItem label="Username">
         {({ id }) => <Input name="username" id={id} />}
       </FormItem>

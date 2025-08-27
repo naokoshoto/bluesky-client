@@ -13,9 +13,11 @@ export const home = "/";
 
 export const search = "/search";
 
-export const searchPosts = (query: string) => `/search/${query}`;
-export const searchUsers = (query: string) => `/search/${query}/users`;
-export const searchHashtags = (query: string) => `/search/${query}/hashtags`;
+export const searchPosts = (query: string) => `/search/${encodeURIComponent(query)}`;
+export const searchUsers = (query: string) =>
+  `/search/${encodeURIComponent(query)}/users`;
+export const searchHashtags = (query: string) =>
+  `/search/${encodeURIComponent(query)}/hashtags`;
 
 export const feeds = "/explore";
 

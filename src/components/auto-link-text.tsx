@@ -54,7 +54,7 @@ linkify.add("#", {
   },
   normalize: function (match) {
     const hashtag = match.url.replace(/^#/, "");
-    match.url = routes.searchHashtags(hashtag);
+    match.url = routes.searchPosts(hashtag);
   },
 });
 

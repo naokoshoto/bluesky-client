@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import { IoIosHeartEmpty, IoIosHeart } from "react-icons/io";
-import { abbriviateNumber } from "@/lib/format";
+import { abbreviateNumber } from "@/lib/format";
 import { handleLike } from "./post-like-button.server";
 
 export function LikeButton({
@@ -32,7 +32,7 @@ export function LikeButton({
     <form className="contents" action={action}>
       <button className="flex items-center space-x-1">
         {state.like ? <IoIosHeart /> : <IoIosHeartEmpty />}
-        {likeCount !== undefined && <div>{abbriviateNumber(likeCount)}</div>}
+        {likeCount !== undefined && <div>{abbreviateNumber(likeCount)}</div>}
       </button>
     </form>
   );
