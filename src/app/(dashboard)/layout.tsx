@@ -98,15 +98,16 @@ export default async function Layout({
 
         <div className="h-14" />
 
-        <aside className="fixed left-0 bottom-0 w-60 border-r top-14 p-6 max-md:hidden overflow-y-auto">
+        <aside className="peer group/nav fixed left-0 bottom-0 w-16 hover:w-56 border-r top-14 p-2 hover:p-6 max-md:hidden overflow-y-auto transition-all">
           <Sidebar
             pinnedFeedGenerators={pinnedFeeds?.feeds}
             feedGenerators={feedGenerators}
             userId={user?.data?.handle}
+            collapsed
           />
         </aside>
 
-        <main className="w-full mx-auto md:pl-60">{children}</main>
+        <main className="w-full mx-auto md:pl-16 peer-hover:md:pl-56 transition-all">{children}</main>
 
         <BottomTabNavigator />
         <Drawer

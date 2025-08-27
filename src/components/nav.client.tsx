@@ -56,10 +56,12 @@ export function Sidebar({
   userId,
   feedGenerators,
   pinnedFeedGenerators,
+  collapsed = false,
 }: {
   userId?: string;
   feedGenerators: z.infer<typeof feedGeneratorSchema>[];
   pinnedFeedGenerators?: z.infer<typeof feedGeneratorSchema>[];
+  collapsed?: boolean;
 }) {
   const pathname = usePathname();
 
@@ -67,31 +69,45 @@ export function Sidebar({
 
   return (
     <div className="flex flex-col justify-between min-h-full divide-y">
-      <div className="flex flex-col space-y-1 pb-4">
+      <div
+        className={`flex flex-col space-y-1 pb-4 ${
+          collapsed ? "items-center group-hover/nav:items-stretch" : ""
+        }`}
+      >
         {SIDEBAR_LINKS_SECTION_1.map(
-          ({ href, text, icon: Icon, iconActive: IconActive }) => (
-            <Button
-              key={href}
-              asChild
-              variant={matchPaths(href, pathname) ? "secondary" : "ghost"}
-              className="justify-start px-2.5 -mx-2.5"
-              size="sm"
-            >
-              <Link href={href}>
-                {matchPaths(href, pathname) ? (
-                  <IconActive className="mr-1.5 text-lg" />
-                ) : (
-                  <Icon className="mr-1.5 text-lg" />
-                )}
-                {text}
-              </Link>
-            </Button>
-          ),
+          ({ href, text, icon: Icon, iconActive: IconActive }) => {
+            const active = matchPaths(href, pathname);
+            const IconComp = active ? IconActive : Icon;
+            return (
+              <Button
+                key={href}
+                asChild
+                variant={active ? "secondary" : "ghost"}
+                size={collapsed ? "icon" : "sm"}
+                className={
+                  collapsed
+                    ? "h-12 w-12 group-hover/nav:w-full group-hover/nav:justify-start group-hover/nav:px-2.5"
+                    : "justify-start px-2.5 -mx-2.5"
+                }
+              >
+                <Link href={href} className="flex items-center">
+                  <IconComp className={collapsed ? "h-6 w-6" : "mr-1.5 text-lg"} />
+                  {collapsed ? (
+                    <span className="hidden ml-2 group-hover/nav:inline">{text}</span>
+                  ) : (
+                    text
+                  )}
+                </Link>
+              </Button>
+            );
+          },
         )}
       </div>
 
       {pinnedFeedGenerators && (
-        <div className="flex flex-col space-y-1 py-4">
+        <div
+          className={`${collapsed ? "hidden group-hover/nav:flex" : "flex"} flex-col space-y-1 py-4`}
+        >
           <div className="uppercase text-muted-foreground text-sm">
             Pinned Feeds
           </div>
@@ -125,7 +141,9 @@ export function Sidebar({
         </div>
       )}
 
-      <div className="flex flex-col space-y-1 py-4">
+      <div
+        className={`${collapsed ? "hidden group-hover/nav:flex" : "flex"} flex-col space-y-1 py-4`}
+      >
         <div className="uppercase text-muted-foreground text-sm">
           Popular Feeds
         </div>
@@ -158,7 +176,9 @@ export function Sidebar({
         ))}
       </div>
 
-      <div className="flex flex-col space-y-1 py-4">
+      <div
+        className={`${collapsed ? "hidden group-hover/nav:flex" : "flex"} flex-col space-y-1 py-4`}
+      >
         <div className="uppercase text-muted-foreground text-sm">Settings</div>
         <ModeToggle />
         {userId && (
@@ -175,7 +195,9 @@ export function Sidebar({
         )}
       </div>
 
-      <div className="pt-4 flex flex-col">
+      <div
+        className={`${collapsed ? "hidden group-hover/nav:flex" : "flex"} pt-4 flex-col`}
+      >
         <Button
           asChild
           variant="ghost"
