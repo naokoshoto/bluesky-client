@@ -194,20 +194,27 @@ export function BottomTabNavigator() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 border-t bg-background/80 z-20 backdrop-blur md:hidden pb-safe-or-2">
-      <div className="flex flex-row justify-between pt-2 px-8">
+      <nav className="flex flex-row justify-between pt-2 px-6">
         {SIDEBAR_LINKS_SECTION_1.map(
-          ({ href, text, icon: Icon, iconActive: IconActive }) => (
-            <Link href={href} className="flex flex-col items-center" key={href}>
-              {matchPaths(href, pathname) ? (
-                <IconActive className="mr-1.5 text-2xl" />
-              ) : (
-                <Icon className="mr-1.5 text-xl" />
-              )}
-              <span className="text-sm">{text}</span>
-            </Link>
-          ),
+          ({ href, text, icon: Icon, iconActive: IconActive }) => {
+            const active = matchPaths(href, pathname);
+            const IconComp = active ? IconActive : Icon;
+            return (
+              <Button
+                key={href}
+                asChild
+                variant={active ? "secondary" : "ghost"}
+                className="flex flex-col items-center gap-1 px-3 py-2"
+              >
+                <Link href={href}>
+                  <IconComp className="h-6 w-6" />
+                  <span className="text-sm">{text}</span>
+                </Link>
+              </Button>
+            );
+          },
         )}
-      </div>
+      </nav>
     </div>
   );
 }
@@ -223,10 +230,12 @@ export function Drawer({
 }) {
   return (
     <Sheet>
-      <SheetTrigger className="md:hidden">
-        <Menu className="mr-3" />
+      <SheetTrigger asChild className="md:hidden">
+        <Button variant="ghost" size="icon">
+          <Menu />
+        </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="p-0">
+      <SheetContent side="left" className="p-0 rounded-r-2xl">
         <div className="overflow-y-auto h-full p-6">
           <Sidebar
             userId={userId}
