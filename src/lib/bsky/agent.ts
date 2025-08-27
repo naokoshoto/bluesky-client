@@ -151,50 +151,63 @@ export const searchPosts = async (params: { query: string; limit?: number }) => 
   return { posts: [], cursor: "" };
 };
 
-export const searchHashtags = async (params: { query: string }) => {
+export const searchHashtags = async (params: { query: string; limit?: number }) => {
   const query = params.query.replace(/^#/, "");
+  const desired = params.limit ?? 20;
 
-  const queryParams = new URLSearchParams();
-  queryParams.set("q", query);
+  const queryLower = query.toLowerCase();
+  const regex = /(^|\s)#([\p{L}0-9_]+)/gu;
+  const found = new Set<string>();
+
+  let cursor: string | undefined;
 
   try {
-    const res = await fetch(
-      `https://api.bsky.app/xrpc/app.bsky.feed.searchPosts?${queryParams.toString()}`,
-      {
-        cache: "no-store",
-      },
-    );
-
-    if (
-      res.ok &&
-      res.headers.get("content-type")?.includes("application/json")
-    ) {
-      const data = await res.json();
-      const posts = (data.posts ?? []) as PostView[];
-
-      const regex = /(^|\s)#([\p{L}0-9_]+)/gu;
-      const found = new Set<string>();
-
-      for (const post of posts) {
-        const text: string = (post as any)?.record?.text ?? "";
-        let match: RegExpExecArray | null;
-        while ((match = regex.exec(text)) !== null) {
-          found.add(match[2]);
-        }
+    while (found.size < desired) {
+      const queryParams = new URLSearchParams();
+      queryParams.set("q", query);
+      queryParams.set("limit", "100");
+      if (cursor) {
+        queryParams.set("cursor", cursor);
       }
 
-      const queryLower = query.toLowerCase();
-      const hashtags = Array.from(found).filter((tag) =>
-        tag.toLowerCase().startsWith(queryLower),
+      const res = await fetch(
+        `https://api.bsky.app/xrpc/app.bsky.feed.searchPosts?${queryParams.toString()}`,
+        {
+          cache: "no-store",
+        },
       );
 
-      return { hashtags };
+      if (
+        res.ok &&
+        res.headers.get("content-type")?.includes("application/json")
+      ) {
+        const data = await res.json();
+        const posts = (data.posts ?? []) as PostView[];
+
+        for (const post of posts) {
+          const text: string = (post as any)?.record?.text ?? "";
+          let match: RegExpExecArray | null;
+          while ((match = regex.exec(text)) !== null) {
+            const tag = match[2];
+            if (tag.toLowerCase().startsWith(queryLower)) {
+              found.add(tag);
+            }
+          }
+        }
+
+        cursor = data.cursor;
+        if (!cursor || posts.length === 0) {
+          break;
+        }
+      } else {
+        break;
+      }
     }
   } catch (e) {
     // ignore
   }
 
-  return { hashtags: [] };
+  return { hashtags: Array.from(found) };
 };
 
 export const getSavedFeeds = async () => {
