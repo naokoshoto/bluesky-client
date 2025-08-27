@@ -1,6 +1,6 @@
 "use client";
 
-import { abbriviateNumber } from "@/lib/format";
+import { abbreviateNumber } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { feedGeneratorSchema } from "@/lib/schemas";
@@ -56,7 +56,7 @@ export function FeedCard({
       </div>
       <div className="text-muted-foreground flex flex-row items-center space-x-1 text-sm">
         <HeartOutline />
-        <span>{abbriviateNumber(feed.likeCount)}</span>
+        <span>{abbreviateNumber(feed.likeCount)}</span>
       </div>
       <div className="flex-1" />
     </div>

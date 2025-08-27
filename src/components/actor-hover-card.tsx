@@ -10,7 +10,7 @@ import { useState } from "react";
 import z from "zod";
 import { useFetch } from "@/lib/hooks";
 import { GetResponse as UserGetResponse } from "@/app/api/user/route";
-import { abbriviateNumber, getInitials } from "@/lib/format";
+import { abbreviateNumber, getInitials } from "@/lib/format";
 import { AutoLinkText } from "./auto-link-text";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FollowButton } from "./follow-button.client";
@@ -85,14 +85,14 @@ export function ActorHoverCard({
           <div className="text-sm space-x-3">
             {actor.followersCount !== undefined && (
               <span>
-                {abbriviateNumber(actor.followersCount)}
+                {abbreviateNumber(actor.followersCount)}
                 <span className="text-muted-foreground"> followers</span>
               </span>
             )}
 
             {actor.postsCount !== undefined && (
               <span>
-                {abbriviateNumber(actor.postsCount)}
+                {abbreviateNumber(actor.postsCount)}
                 <span className="text-muted-foreground"> posts</span>
               </span>
             )}

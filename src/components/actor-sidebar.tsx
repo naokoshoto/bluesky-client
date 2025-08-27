@@ -1,6 +1,6 @@
 import { ProfileViewDetailed } from "@atproto/api/dist/client/types/app/bsky/actor/defs";
 import Image from "next/image";
-import { abbriviateNumber } from "@/lib/format";
+import { abbreviateNumber } from "@/lib/format";
 import { AutoLinkText } from "./auto-link-text";
 import { ActorAvatar } from "./actor";
 import { cn } from "@/lib/utils";
@@ -61,21 +61,21 @@ export function ActorSidebar({
         <div className="text-sm space-x-3">
           {actor.followersCount !== undefined && (
             <span>
-              {abbriviateNumber(actor.followersCount)}
+              {abbreviateNumber(actor.followersCount)}
               <span className="text-muted-foreground"> followers</span>
             </span>
           )}
 
           {actor.followsCount !== undefined && (
             <span>
-              {abbriviateNumber(actor.followsCount)}
+              {abbreviateNumber(actor.followsCount)}
               <span className="text-muted-foreground"> following</span>
             </span>
           )}
 
           {actor.postsCount !== undefined && (
             <span>
-              {abbriviateNumber(actor.postsCount)}
+              {abbreviateNumber(actor.postsCount)}
               <span className="text-muted-foreground"> posts</span>
             </span>
           )}

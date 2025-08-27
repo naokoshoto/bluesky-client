@@ -3,7 +3,7 @@ import { ProfileViewBasic } from "@atproto/api/dist/client/types/app/bsky/actor/
 import * as routes from "@/lib/routes";
 import { RelativeTime } from "./relative-time.client";
 import { cn } from "@/lib/utils";
-import { abbriviateNumber } from "@/lib/format";
+import { abbreviateNumber } from "@/lib/format";
 import {
   postSchema,
   embedPostSchema,
@@ -392,7 +392,7 @@ export function Post({
             >
               <ReplyOutlined />
               {post.replyCount !== undefined && (
-                <div>{abbriviateNumber(post.replyCount)}</div>
+                <div>{abbreviateNumber(post.replyCount)}</div>
               )}
             </Link>
           </div>
