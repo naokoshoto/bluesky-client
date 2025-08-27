@@ -29,7 +29,7 @@ export const agent = new AtpAgent({
 });
 
 export const publicAgent = new AtpAgent({
-  service: "https://public.api.bsky.app",
+  service: "https://api.bsky.app",
   fetch: (input, init) => {
     return fetch(input, {
       ...init,
@@ -131,7 +131,7 @@ export const searchPosts = async (params: { query: string; limit?: number }) => 
 
   try {
     const res = await fetch(
-      `https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?${queryParams.toString()}`,
+      `https://api.bsky.app/xrpc/app.bsky.feed.searchPosts?${queryParams.toString()}`,
       {
         cache: "no-store",
       },
@@ -164,7 +164,7 @@ export const searchHashtags = async (params: {
 
   try {
     const res = await fetch(
-      `https://public.api.bsky.app/xrpc/app.bsky.feed.searchPosts?${queryParams.toString()}`,
+      `https://api.bsky.app/xrpc/app.bsky.feed.searchPosts?${queryParams.toString()}`,
       {
         cache: "no-store",
       },
@@ -205,7 +205,7 @@ export const getPopularFeedGenerators = async (params: {
     queryParams.append("cursor", params.cursor);
   }
   const res = await fetch(
-    `https://public.api.bsky.app/xrpc/app.bsky.unspecced.getPopularFeedGenerators?${queryParams.toString()}`,
+    `https://api.bsky.app/xrpc/app.bsky.unspecced.getPopularFeedGenerators?${queryParams.toString()}`,
     {
       // next: {
       //   revalidate: 60 * 60, // 1 hour
@@ -258,7 +258,7 @@ export const getActorFeeds = async (params: {
     queryParams.append("cursor", params.cursor);
   }
   const res = await fetch(
-    `https://public.api.bsky.app/xrpc/app.bsky.feed.getActorFeeds?${queryParams.toString()}&rkey=likeCount`,
+    `https://api.bsky.app/xrpc/app.bsky.feed.getActorFeeds?${queryParams.toString()}&rkey=likeCount`,
     {
       cache: "no-store",
     },
