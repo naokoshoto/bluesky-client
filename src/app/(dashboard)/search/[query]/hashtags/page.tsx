@@ -3,7 +3,8 @@ import Link from "next/link";
 import * as routes from "@/lib/routes";
 
 export default async function Page({ params }: { params: { query: string } }) {
-  const { hashtags } = await searchHashtags({ query: params.query, limit: 20 });
+  const query = decodeURIComponent(params.query);
+  const { hashtags } = await searchHashtags({ query, limit: 20 });
 
   return (
     <ul className="flex flex-col">

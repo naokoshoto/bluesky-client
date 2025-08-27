@@ -7,8 +7,9 @@ import { Actor } from "@/components/actor";
 // const SPLIT = 10;
 
 export default async function Page({ params }: { params: { query: string } }) {
+  const query = decodeURIComponent(params.query);
   const actors = await publicAgent.searchActors({
-    q: params.query,
+    q: query,
     limit: 10,
   });
 
