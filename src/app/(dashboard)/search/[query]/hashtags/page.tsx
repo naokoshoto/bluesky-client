@@ -4,7 +4,7 @@ import * as routes from "@/lib/routes";
 
 export default async function Page({ params }: { params: { query: string } }) {
   const query = decodeURIComponent(params.query);
-  const { hashtags } = await searchHashtags({ query, limit: 20 });
+  const { hashtags } = await searchHashtags({ query });
 
   return (
     <ul className="flex flex-col">
