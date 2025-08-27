@@ -1,13 +1,16 @@
-export function abbriviateNumber(number: number) {
+export function abbriviateNumber(value: number) {
+  const sign = value < 0 ? "-" : "";
+  const number = Math.abs(value);
+
   if (number < 1000) {
-    return number;
+    return `${sign}${number}`;
   }
 
   if (number < 1000000) {
-    return `${Math.floor(number / 100) / 10}k`;
+    return `${sign}${Math.floor(number / 100) / 10}k`;
   }
 
-  return `${Math.floor(number / 100000) / 10}m`;
+  return `${sign}${Math.floor(number / 100000) / 10}m`;
 }
 
 export function getInitials(name: string) {
