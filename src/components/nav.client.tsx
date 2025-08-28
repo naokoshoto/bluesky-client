@@ -46,22 +46,23 @@ export function NavigationRail() {
   const pathname = usePathname();
 
   return (
-    <aside className="fixed left-0 bottom-0 top-14 max-md:hidden">
-      <md-navigation-drawer opened>
-        {NAV_ITEMS.map(({ href, label, icon, activeIcon }) => {
-          const active = matchPaths(href, pathname);
-          const Inactive = icon as any;
-          const Active = activeIcon as any;
-          return (
-            <Link key={href} href={href}>
-              <md-navigation-tab active={active} label={label}>
-                <Inactive slot="inactive-icon" className="h-6 w-6" />
-                <Active slot="active-icon" className="h-6 w-6" />
-              </md-navigation-tab>
-            </Link>
-          );
-        })}
-      </md-navigation-drawer>
+    <aside className="fixed left-0 bottom-0 top-14 max-md:hidden w-20 bg-background p-2 flex flex-col items-center gap-1 z-20">
+      {NAV_ITEMS.map(({ href, label, icon, activeIcon }) => {
+        const active = matchPaths(href, pathname);
+        const Icon = (active ? activeIcon : icon) as any;
+        return (
+          <Link
+            key={href}
+            href={href}
+            className="flex flex-col items-center gap-1 rounded-full p-2"
+          >
+            <md-icon-button selected={active}>
+              <Icon slot="icon" className="h-6 w-6" />
+            </md-icon-button>
+            <span className={`text-xs ${active ? "text-primary" : ""}`}>{label}</span>
+          </Link>
+        );
+      })}
     </aside>
   );
 }

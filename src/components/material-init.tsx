@@ -6,7 +6,7 @@ import "@material/web/button/outlined-button.js";
 import "@material/web/button/text-button.js";
 import "@material/web/labs/navigationbar/navigation-bar.js";
 import "@material/web/labs/navigationtab/navigation-tab.js";
-import "@material/web/labs/navigationdrawer/navigation-drawer.js";
+import "@material/web/iconbutton/icon-button.js";
 
 export function MaterialInit() {
   return null;
