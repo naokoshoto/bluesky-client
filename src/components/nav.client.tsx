@@ -80,11 +80,11 @@ function Sidebar({
             size="sm"
             className={
               collapsed
-                ? "flex flex-col items-center gap-1 w-full rounded-full px-3 py-2"
-                : "justify-start px-2.5 -mx-2.5"
+                ? "flex flex-col items-center gap-1 w-16 rounded-full px-3 py-2"
+                : "justify-start gap-3 w-full rounded-full px-4 py-2"
             }
           >
-            <Menu className={collapsed ? "h-6 w-6" : "mr-1.5 text-lg"} />
+            <Menu className={collapsed ? "h-6 w-6" : "text-lg"} />
             {collapsed ? <span className="text-xs">Menu</span> : "Menu"}
           </Button>
         )}
@@ -100,15 +100,15 @@ function Sidebar({
                 variant={active ? "secondary" : "ghost"}
                 className={
                   collapsed
-                    ? "flex flex-col items-center gap-1 w-full rounded-full px-3 py-2"
-                    : "justify-start px-2.5 -mx-2.5"
+                    ? "flex flex-col items-center gap-1 w-16 rounded-full px-3 py-2"
+                    : "justify-start gap-3 w-full rounded-full px-4 py-2"
                 }
               >
                 <Link
                   href={href}
                   className={collapsed ? "flex flex-col items-center" : "flex items-center"}
                 >
-                  <IconComp className={collapsed ? "h-6 w-6" : "mr-1.5 text-lg"} />
+                  <IconComp className={collapsed ? "h-6 w-6" : "text-lg"} />
                   {collapsed ? <span className="text-xs">{text}</span> : text}
                 </Link>
               </Button>
