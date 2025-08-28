@@ -1,18 +1,11 @@
-import {
-  agent,
-  getFeedGenerators,
-  getPopularFeedGenerators,
-  getSession,
-  getSavedFeeds,
-} from "@/lib/bsky/agent";
-import { BottomTabNavigator, Drawer, DesktopNav } from "@/components/nav.client";
+import { agent, getSession } from "@/lib/bsky/agent";
+import { NavigationRail, BottomTabNavigator } from "@/components/nav.client";
 import Link from "next/link";
 import { SearchBar } from "./search-bar.client";
 import * as routes from "@/lib/routes";
 import { Logo, BellOutline } from "@/components/icons";
 import { ActorAvatar } from "@/components/actor";
 import { Button } from "@/components/ui/button";
-import { feedRequiresAuth } from "@/lib/bsky/utils";
 import { VercelToolbar } from "@vercel/toolbar/next";
 import { env } from "@/env";
 
@@ -34,32 +27,7 @@ export default async function Layout({
 }) {
   const session = await getSession();
 
-  const [user, savedFeeds, popularFeedGenerators] = await Promise.all([
-    session ? agent.getProfile({ actor: session.handle }) : null,
-    session ? getSavedFeeds() : null,
-    getPopularFeedGenerators({ limit: 30 }),
-  ]);
-
-  const pinnedFeedUris = savedFeeds?.items
-    .filter((f) => f.type === "feed")
-    .map((f) => f.value);
-
-  const pinnedFeeds =
-    pinnedFeedUris && pinnedFeedUris.length > 0
-      ? await getFeedGenerators({
-          feeds: pinnedFeedUris,
-        })
-      : undefined;
-
-  const feedGenerators = popularFeedGenerators.feeds
-    .filter((f) => {
-      if (!session) {
-        return !feedRequiresAuth(f);
-      }
-      return true;
-    })
-    .sort((a, b) => b.likeCount - a.likeCount);
-
+  const user = session ? await agent.getProfile({ actor: session.handle }) : null;
   const notifications = session
     ? await agent.countUnreadNotifications()
     : undefined;
@@ -98,20 +66,10 @@ export default async function Layout({
 
         <div className="h-14" />
 
-        <DesktopNav
-          pinnedFeedGenerators={pinnedFeeds?.feeds}
-          feedGenerators={feedGenerators}
-          userId={user?.data?.handle}
-        >
-          {children}
-        </DesktopNav>
+        <NavigationRail />
+        <main className="w-full md:pl-20">{children}</main>
 
         <BottomTabNavigator />
-        <Drawer
-          pinnedFeedGenerators={pinnedFeeds?.feeds}
-          feedGenerators={feedGenerators}
-          userId={user?.data?.handle}
-        />
       </div>
       {(session?.handle === env.ADMIN_HANDLE ||
         env.NODE_ENV === "development") && <VercelToolbar />}
