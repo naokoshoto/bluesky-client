@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { VercelToolbar } from "@vercel/toolbar/next";
 import { env } from "@/env";
 
+export const dynamic = "force-dynamic";
+
 function NotificationBell({ count }: { count: number }) {
   return (
     <Link className="relative" href={routes.notifications}>
@@ -57,7 +59,7 @@ export default async function Layout({
                 </Link>
               </>
             ) : (
-              <Button asChild size="sm">
+              <Button asChild>
                 <Link href={routes.auth}>Login</Link>
               </Button>
             )}

@@ -20,8 +20,7 @@ export function ModeToggle() {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          size="sm"
-          className="justify-start  px-2.5 -mx-2.5"
+          className="justify-start px-2.5 -mx-2.5"
         >
           <Sun className="dark:hidden block mr-1" />
           <Moon className="dark:block hidden mr-1" />

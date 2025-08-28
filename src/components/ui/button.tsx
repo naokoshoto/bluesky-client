@@ -1,56 +1,37 @@
 import * as React from "react";
-import { Slot } from "@radix-ui/react-slot";
-import { cva, type VariantProps } from "class-variance-authority";
+import "@material/web/button/filled-button.js";
+import "@material/web/button/filled-tonal-button.js";
+import "@material/web/button/outlined-button.js";
+import "@material/web/button/text-button.js";
 
-import { cn } from "@/lib/utils";
-
-const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-full text-sm font-medium ring-offset-[hsl(var(--surface))] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
-  {
-    variants: {
-      variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
-        destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline:
-          "border border-input bg-[hsl(var(--surface))] hover:bg-accent hover:text-accent-foreground",
-        secondary:
-          "bg-[hsl(var(--secondary-container))] text-[hsl(var(--on-secondary-container))] hover:bg-[hsl(var(--secondary-container))/80]",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
-      },
-      size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 px-3",
-        lg: "h-11 px-8",
-        icon: "h-10 w-10",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-      size: "default",
-    },
-  },
-);
+const variantMap = {
+  default: "md-filled-button",
+  secondary: "md-filled-tonal-button",
+  outline: "md-outlined-button",
+  ghost: "md-text-button",
+  link: "md-text-button",
+  destructive: "md-filled-button",
+} as const;
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+  extends React.ButtonHTMLAttributes<HTMLElement> {
   asChild?: boolean;
+  variant?: keyof typeof variantMap;
 }
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button";
-    return (
-      <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
-        ref={ref}
-        {...props}
-      />
-    );
-  },
+const Button = React.forwardRef<HTMLElement, ButtonProps>(
+  ({ asChild = false, variant = "default", className, children, ...props }, ref) => {
+    const Tag = variantMap[variant] as keyof JSX.IntrinsicElements;
+    if (asChild && React.isValidElement(children)) {
+      return React.cloneElement(
+        children,
+        {},
+        React.createElement(Tag, { ref, className, ...props }, children.props.children)
+      );
+    }
+    return React.createElement(Tag, { ref, className, ...props }, children);
+  }
 );
 Button.displayName = "Button";
 
-export { Button, buttonVariants };
+export { Button };

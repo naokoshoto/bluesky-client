@@ -1,5 +1,7 @@
 import Markdown from "markdown-to-jsx";
 
+export const dynamic = "force-dynamic";
+
 const markdown = `
 # About
 

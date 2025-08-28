@@ -143,7 +143,6 @@ function Sidebar({
             <Button
               key={feed.uri}
               asChild
-              size="sm"
               variant="outline"
               className="mr-2 mb-2 pl-2"
             >

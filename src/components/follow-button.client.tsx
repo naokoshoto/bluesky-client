@@ -59,7 +59,6 @@ export function FollowButton({
     <form className="contents" action={action}>
       <Button
         className={cn("flex items-center space-x-1", className)}
-        size="sm"
         variant="secondary"
       >
         {state.following ? "Following" : "Follow"}
