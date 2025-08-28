@@ -13,6 +13,7 @@
     "@atproto/api": "^0.13.4",
     "@atproto/oauth-client": "^0.2.0",
     "@hookform/resolvers": "^3.9.0",
+    "@material/web": "^2.4.0",
     "@radix-ui/react-avatar": "^1.1.0",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-dropdown-menu": "^2.1.1",

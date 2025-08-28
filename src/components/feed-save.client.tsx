@@ -33,8 +33,7 @@ export function SaveFeedButton({
     <form className="contents" action={action}>
       <Button
         className={cn("flex items-center space-x-1 text-xl", className)}
-        size="icon"
-        variant="ghost"
+        variant="text"
       >
         {state.savedId ? <PinFill /> : <PinOutline />}
       </Button>

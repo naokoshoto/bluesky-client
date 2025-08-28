@@ -4,7 +4,6 @@ import { Post } from "@/components/post";
 import { feedViewPostsSchema } from "@/lib/schemas";
 import { ResetScroll } from "@/components/reset-scroll";
 import { ResetAboveThisPoint } from "@/components/track-scroll";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import * as routes from "@/lib/routes";
 
@@ -51,10 +50,8 @@ export default async function Posts({
         <Post key={post.uri} post={post} reason={reason} />
       ))}
       <noscript>
-        <Button asChild>
-          <Link href={routes.user(params.userId) + `?cursor=${nextRscCursor}`}>
-            Next page
-          </Link>
+        <Button href={routes.user(params.userId) + `?cursor=${nextRscCursor}`}>
+          Next page
         </Button>
       </noscript>
       <VirtualizedPosts

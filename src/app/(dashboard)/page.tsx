@@ -9,7 +9,6 @@ import { VirtualizedPosts } from "@/components/virtualized-posts";
 import { Post } from "@/components/post";
 import { TemplateWithSidebar } from "@/components/template-with-sidebar";
 import { FeedCard } from "@/components/feed-card";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import {
@@ -142,24 +141,21 @@ function Sidebar({
           {feeds.map((feed) => (
             <Button
               key={feed.uri}
-              asChild
-              size="sm"
-              variant="outline"
+              variant="outlined"
               className="mr-2 mb-2 pl-2"
+              href={`?feed=${feed.uri}`}
             >
-              <Link href={`?feed=${feed.uri}`}>
-                {feed.avatar && (
-                  <Image
-                    unoptimized
-                    src={feed.avatar}
-                    alt={feed.displayName}
-                    className="rounded-full mr-1.5"
-                    width={24}
-                    height={24}
-                  />
-                )}
-                {feed.displayName}
-              </Link>
+              {feed.avatar && (
+                <Image
+                  unoptimized
+                  src={feed.avatar}
+                  alt={feed.displayName}
+                  className="rounded-full mr-1.5"
+                  width={24}
+                  height={24}
+                />
+              )}
+              {feed.displayName}
             </Button>
           ))}
         </div>

@@ -95,9 +95,7 @@ export default async function Layout({
                 </Link>
               </>
             ) : (
-              <Button asChild size="sm">
-                <Link href={routes.auth}>Login</Link>
-              </Button>
+              <Button href={routes.auth}>Login</Button>
             )}
           </div>
         </div>
