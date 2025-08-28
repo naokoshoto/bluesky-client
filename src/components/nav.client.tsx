@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as routes from "@/lib/routes";
+import { cn } from "@/lib/utils";
 
 import {
   HomeOutline,
@@ -56,12 +57,27 @@ export function NavigationRail() {
             <Button
               key={href}
               asChild
-              variant={active ? "secondary" : "ghost"}
-              className="h-14 w-14 rounded-full flex flex-col items-center justify-center gap-1"
+              variant="ghost"
+              className="h-14 w-14 flex flex-col items-center justify-center gap-1 hover:bg-transparent"
             >
-              <Link href={href} className="flex flex-col items-center">
-                <IconComp className="h-6 w-6" />
-                <span className="text-xs">{label}</span>
+              <Link href={href} className="group flex flex-col items-center">
+                <span
+                  className={cn(
+                    "flex h-10 w-10 items-center justify-center rounded-full transition-colors",
+                    active
+                      ? "bg-[hsl(var(--secondary-container))] text-[hsl(var(--on-secondary-container))]"
+                      : "group-hover:bg-[hsl(var(--secondary-container))]/40"
+                  )}
+                >
+                  <IconComp className="h-6 w-6" />
+                </span>
+                <span
+                  className={cn("text-xs", {
+                    "text-[hsl(var(--on-secondary-container))]": active,
+                  })}
+                >
+                  {label}
+                </span>
               </Link>
             </Button>
           );
@@ -84,12 +100,27 @@ export function BottomTabNavigator() {
             <Button
               key={href}
               asChild
-              variant={active ? "secondary" : "ghost"}
-              className="flex flex-col items-center gap-1 px-3 py-2"
+              variant="ghost"
+              className="flex flex-col items-center gap-1 px-3 py-2 hover:bg-transparent"
             >
-              <Link href={href}>
-                <IconComp className="h-6 w-6" />
-                <span className="text-sm">{label}</span>
+              <Link href={href} className="group flex flex-col items-center">
+                <span
+                  className={cn(
+                    "flex h-10 w-10 items-center justify-center rounded-full transition-colors",
+                    active
+                      ? "bg-[hsl(var(--secondary-container))] text-[hsl(var(--on-secondary-container))]"
+                      : "group-hover:bg-[hsl(var(--secondary-container))]/40"
+                  )}
+                >
+                  <IconComp className="h-6 w-6" />
+                </span>
+                <span
+                  className={cn("text-sm", {
+                    "text-[hsl(var(--on-secondary-container))]": active,
+                  })}
+                >
+                  {label}
+                </span>
               </Link>
             </Button>
           );
