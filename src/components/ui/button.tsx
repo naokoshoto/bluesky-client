@@ -5,6 +5,8 @@ import "@material/web/button/text-button.js";
 
 export interface ButtonProps extends React.HTMLAttributes<HTMLElement> {
   variant?: "filled" | "outlined" | "text";
+  href?: string;
+  type?: string;
 }
 
 const Button = React.forwardRef<HTMLElement, ButtonProps>(

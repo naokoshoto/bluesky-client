@@ -72,19 +72,16 @@ export function Sidebar({
           ({ href, text, icon: Icon, iconActive: IconActive }) => (
             <Button
               key={href}
-              asChild
-              variant={matchPaths(href, pathname) ? "secondary" : "ghost"}
+              href={href}
+              variant={matchPaths(href, pathname) ? "filled" : "text"}
               className="justify-start px-2.5 -mx-2.5"
-              size="sm"
             >
-              <Link href={href}>
-                {matchPaths(href, pathname) ? (
-                  <IconActive className="mr-1.5 text-lg" />
-                ) : (
-                  <Icon className="mr-1.5 text-lg" />
-                )}
-                {text}
-              </Link>
+              {matchPaths(href, pathname) ? (
+                <IconActive className="mr-1.5 text-lg" />
+              ) : (
+                <Icon className="mr-1.5 text-lg" />
+              )}
+              {text}
             </Button>
           ),
         )}
@@ -98,15 +95,11 @@ export function Sidebar({
           {pinnedFeedGenerators.map((feed) => (
             <Button
               key={feed.uri}
-              asChild
-              size="sm"
-              variant="ghost"
+              href={`/?feed=${feed.uri}`}
+              variant="text"
               className="mr-2 justify-start px-2.5 -mx-2.5"
             >
-              <Link
-                className="flex flex-row space-x-1.5"
-                href={`/?feed=${feed.uri}`}
-              >
+              <div className="flex flex-row space-x-1.5">
                 {feed.avatar && (
                   <div className="relative w-6 h-6">
                     <Image
@@ -119,7 +112,7 @@ export function Sidebar({
                   </div>
                 )}
                 <span>{feed.displayName}</span>
-              </Link>
+              </div>
             </Button>
           ))}
         </div>
@@ -132,15 +125,11 @@ export function Sidebar({
         {feeds.map((feed) => (
           <Button
             key={feed.uri}
-            asChild
-            size="sm"
-            variant="ghost"
+            href={`/?feed=${feed.uri}`}
+            variant="text"
             className="mr-2 justify-start px-2.5 -mx-2.5"
           >
-            <Link
-              className="flex flex-row space-x-1.5"
-              href={`/?feed=${feed.uri}`}
-            >
+            <div className="flex flex-row space-x-1.5">
               {feed.avatar && (
                 <div className="relative w-6 h-6">
                   <Image
@@ -153,7 +142,7 @@ export function Sidebar({
                 </div>
               )}
               <span>{feed.displayName}</span>
-            </Link>
+            </div>
           </Button>
         ))}
       </div>
@@ -164,9 +153,8 @@ export function Sidebar({
         {userId && (
           <form action={logout} className="contents">
             <Button
-              variant="ghost"
+              variant="text"
               className="justify-start px-2.5 -mx-2.5"
-              size="sm"
             >
               <LogOut className="mr-1.5 text-lg" />
               Logout
@@ -177,12 +165,11 @@ export function Sidebar({
 
       <div className="pt-4 flex flex-col">
         <Button
-          asChild
-          variant="ghost"
-          size="sm"
+          href={routes.about}
+          variant="text"
           className="justify-start px-2.5 -mx-2.5"
         >
-          <Link href={routes.about}>About</Link>
+          About
         </Button>
       </div>
     </div>

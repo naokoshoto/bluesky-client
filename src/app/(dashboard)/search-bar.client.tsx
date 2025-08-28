@@ -18,7 +18,7 @@ export function SearchBar() {
       <Input
         name="q"
         className="w-full"
-        placeholder="Search..."
+        label="Search..."
         defaultValue={defaultValue}
       />
     </form>

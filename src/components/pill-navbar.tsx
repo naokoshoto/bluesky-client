@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 type Link = {
@@ -19,11 +18,10 @@ export function PillNavbar({ links }: { links: Link[] }) {
           return (
             <Button
               key={link.href}
-              asChild
-              variant={link.href === pathname ? "default" : "outline"}
-              size="sm"
+              href={link.href}
+              variant={link.href === pathname ? "filled" : "outlined"}
             >
-              <Link href={link.href}>{link.label}</Link>
+              {link.label}
             </Button>
           );
         })}
