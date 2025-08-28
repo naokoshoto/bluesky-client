@@ -1,8 +1,5 @@
 "use client";
 
-import "@material/web/labs/navigationbar/navigation-bar.js";
-import "@material/web/labs/navigationtab/navigation-tab.js";
-import "@material/web/labs/navigationdrawer/navigation-drawer.js";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as routes from "@/lib/routes";

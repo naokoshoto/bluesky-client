@@ -1,7 +1,5 @@
 "use client";
 
-import "@material/web/labs/navigationbar/navigation-bar.js";
-import "@material/web/labs/navigationtab/navigation-tab.js";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { IconType } from "react-icons";

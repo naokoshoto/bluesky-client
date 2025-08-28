@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Roboto_Flex } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
+import { MaterialInit } from "@/components/material-init";
 import "./globals.css";
 
 const roboto = Roboto_Flex({ subsets: ["latin"] });
@@ -50,6 +51,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <MaterialInit />
           {children}
         </ThemeProvider>
       </body>
