@@ -77,11 +77,15 @@ function Sidebar({
           <Button
             onClick={onToggleCollapsed}
             variant="ghost"
-            size={collapsed ? "icon" : "sm"}
-            className={collapsed ? "h-12 w-12" : "justify-start px-2.5 -mx-2.5"}
+            size="sm"
+            className={
+              collapsed
+                ? "flex flex-col items-center gap-1 w-full rounded-full px-3 py-2"
+                : "justify-start px-2.5 -mx-2.5"
+            }
           >
             <Menu className={collapsed ? "h-6 w-6" : "mr-1.5 text-lg"} />
-            {collapsed ? null : "Menu"}
+            {collapsed ? <span className="text-xs">Menu</span> : "Menu"}
           </Button>
         )}
         {SIDEBAR_LINKS_SECTION_1.map(
@@ -92,13 +96,20 @@ function Sidebar({
               <Button
                 key={href}
                 asChild
+                size="sm"
                 variant={active ? "secondary" : "ghost"}
-                size={collapsed ? "icon" : "sm"}
-                className={collapsed ? "h-12 w-12" : "justify-start px-2.5 -mx-2.5"}
+                className={
+                  collapsed
+                    ? "flex flex-col items-center gap-1 w-full rounded-full px-3 py-2"
+                    : "justify-start px-2.5 -mx-2.5"
+                }
               >
-                <Link href={href} className="flex items-center">
+                <Link
+                  href={href}
+                  className={collapsed ? "flex flex-col items-center" : "flex items-center"}
+                >
                   <IconComp className={collapsed ? "h-6 w-6" : "mr-1.5 text-lg"} />
-                  {collapsed ? null : text}
+                  {collapsed ? <span className="text-xs">{text}</span> : text}
                 </Link>
               </Button>
             );
