@@ -7,6 +7,8 @@ import { ActorHoverCard } from "@/components/actor-hover-card";
 import Link from "next/link";
 import * as routes from "@/lib/routes";
 
+export const dynamic = "force-dynamic";
+
 function getCreatedAt(notification: Notification) {
   return "createdAt" in notification.record &&
     typeof notification.record.createdAt === "string"
