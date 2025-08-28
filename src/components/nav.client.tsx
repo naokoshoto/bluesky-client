@@ -220,7 +220,7 @@ export function BottomTabNavigator() {
   const pathname = usePathname();
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 border-t bg-background/80 z-20 backdrop-blur md:hidden pb-safe-or-2">
+    <div className="fixed bottom-0 left-0 right-0 border-t bg-[hsl(var(--surface))]/90 z-20 backdrop-blur shadow-md md:hidden pb-safe-or-2">
       <nav className="flex flex-row justify-between pt-2 px-6">
         {SIDEBAR_LINKS_SECTION_1.map(
           ({ href, text, icon: Icon, iconActive: IconActive }) => {
@@ -267,7 +267,7 @@ export function Drawer({
           <span className="sr-only">Open navigation</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="p-0 w-full sm:max-w-full rounded-none">
+      <SheetContent side="left" className="p-0 w-full sm:max-w-full rounded-none bg-[hsl(var(--surface))]">
         <div className="overflow-y-auto h-full p-6">
           <Sidebar
             userId={userId}
@@ -296,7 +296,7 @@ export function DesktopNav({
   return (
     <>
       <aside
-        className={`fixed left-0 bottom-0 top-14 border-r overflow-y-auto transition-all max-md:hidden ${
+        className={`fixed left-0 bottom-0 top-14 border-r bg-[hsl(var(--surface-container))] overflow-y-auto transition-all shadow-md max-md:hidden ${
           expanded ? "w-64 p-6" : "w-20 p-2"
         }`}
       >

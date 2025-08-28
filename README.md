@@ -22,6 +22,8 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 
 The interface follows Material Design 3's expressive color scheme, providing a bold and vibrant aesthetic.
 
+Navigation surfaces and active buttons draw from Material 3 container tokens, giving rails and tabs the proper elevated colors and contrast.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

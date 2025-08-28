@@ -12,8 +12,15 @@
     --popover-foreground: 255 7% 11%;
     --primary: 256 34% 48%;
     --primary-foreground: 0 0% 100%;
+    --primary-container: 272 100% 94%;
+    --on-primary-container: 272 100% 18%;
     --secondary: 259 11% 40%;
     --secondary-foreground: 0 0% 100%;
+    --secondary-container: 270 44% 92%;
+    --on-secondary-container: 256 23% 13%;
+    --surface: 0 0% 100%;
+    --surface-container: 283 48% 95%;
+    --surface-container-high: 286 45% 93%;
     --muted: 275 24% 90%;
     --muted-foreground: 264 7% 29%;
     --accent: 340 21% 41%;
@@ -43,8 +50,15 @@
     --popover-foreground: 312 9% 89%;
     --primary: 258 100% 87%;
     --primary-foreground: 259 58% 28%;
+    --primary-container: 257 43% 39%;
+    --on-primary-container: 272 100% 94%;
     --secondary: 263 27% 81%;
     --secondary-foreground: 258 18% 22%;
+    --secondary-container: 266 14% 31%;
+    --on-secondary-container: 272 100% 92%;
+    --surface: 255 7% 11%;
+    --surface-container: 255 8% 13%;
+    --surface-container-high: 267 9% 16%;
     --muted: 264 7% 29%;
     --muted-foreground: 270 11% 79%;
     --accent: 343 63% 83%;
@@ -70,6 +84,6 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-[hsl(var(--surface))] text-foreground;
   }
 }
