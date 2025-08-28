@@ -4,6 +4,7 @@ import { TemplateWithSidebar } from "@/components/template-with-sidebar";
 import { PillNavbar } from "@/components/pill-navbar";
 import * as routes from "@/lib/routes";
 import { userIsMyself } from "@/lib/bsky/utils.server";
+import { Article, ChatOutline, HeartOutline, Person } from "@/components/icons";
 
 export default async function Layout({
   children,
@@ -21,11 +22,11 @@ export default async function Layout({
   const isMyself = await userIsMyself(actor.data.handle);
 
   const links = [
-    { href: routes.user(params.userId), label: "Overview" },
-    { href: routes.userPosts(params.userId), label: "Posts" },
-    { href: routes.userReplies(params.userId), label: "Replies" },
+    { href: routes.user(params.userId), label: "Overview", icon: Person },
+    { href: routes.userPosts(params.userId), label: "Posts", icon: Article },
+    { href: routes.userReplies(params.userId), label: "Replies", icon: ChatOutline },
     ...(isMyself
-      ? [{ href: routes.userLikes(params.userId), label: "Likes" }]
+      ? [{ href: routes.userLikes(params.userId), label: "Likes", icon: HeartOutline }]
       : []),
   ];
 

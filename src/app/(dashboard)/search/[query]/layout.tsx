@@ -1,6 +1,7 @@
 import { TemplateWithSidebar } from "@/components/template-with-sidebar";
 import { PillNavbar } from "@/components/pill-navbar";
 import * as routes from "@/lib/routes";
+import { Article, Person, Tag } from "@/components/icons";
 
 export default function Layout({
   children,
@@ -14,14 +15,17 @@ export default function Layout({
     {
       href: routes.searchPosts(query),
       label: "Posts",
+      icon: Article,
     },
     {
       href: routes.searchUsers(query),
       label: "Users",
+      icon: Person,
     },
     {
       href: routes.searchHashtags(query),
       label: "Hashtags",
+      icon: Tag,
     },
   ];
 
